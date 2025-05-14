@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
+import { Toaster } from 'react-hot-toast'
 import '@shortify/ui/globals.css'
 
 const geistSans = localFont({
@@ -25,6 +26,10 @@ export default function RootLayout({
     <html lang='en'>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
+        <Toaster
+          position='bottom-right'
+          reverseOrder={false}
+        />
       </body>
     </html>
   )
