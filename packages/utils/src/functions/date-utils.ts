@@ -19,6 +19,12 @@ export class DateUtils {
     return diffInMinutes
   }
 
+  static isBeforeNow(date: DateType): boolean {
+    const now = dayjs()
+    const targetDate = dayjs(date)
+    return targetDate.isBefore(now)
+  }
+
   static format(date: DateType, format: string = 'DD/MM/YYYY HH:mm:ss'): string {
     return dayjs(date).format(format)
   }
