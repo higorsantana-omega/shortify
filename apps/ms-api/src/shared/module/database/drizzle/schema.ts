@@ -1,7 +1,7 @@
-import { datetime, mysqlTable, serial, text, varchar } from 'drizzle-orm/mysql-core'
+import { char, datetime, mysqlTable, text, varchar } from 'drizzle-orm/mysql-core'
 
 export const links = mysqlTable('links', {
-  id: serial('id').primaryKey(),
+  id: char('id', { length: 36 }).primaryKey().notNull(),
   key: varchar({ length: 10 }).notNull().unique(),
   url: text().notNull(),
   shortLink: text().notNull(),
