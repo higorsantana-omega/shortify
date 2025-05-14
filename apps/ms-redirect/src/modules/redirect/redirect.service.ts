@@ -13,7 +13,7 @@ export class RedirectService {
 
     const isExpired = link.checkIfExpired()
     if (isExpired)
-      throw new NotFoundException('Link not found')
+      return link.getExpiredUrl()
 
     return link.getUrl()
   }
