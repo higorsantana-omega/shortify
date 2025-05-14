@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: 120 61% 50%;  /* #32CD32 */
+    --primary-hover: 120 61% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary colors */
+    --secondary: 262 83% 58%;
+    --secondary-hover: 262 83% 52%;
+    --secondary-foreground: 0 0% 100%;
+
+    --background: 0 0% 100%;
+    --foreground: 224 71% 4%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 8% 46%;
+
+    --success: 142 72% 29%;
+    --warning: 38 92% 50%;
+    --error: 0 84% 60%;
+    --info: 208 100% 47%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 120 61% 50%;
+
+    --radius-sm: 0.3rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.7rem;
+
+    --spacing-1: 0.25rem;
+    --spacing-2: 0.5rem;
+    --spacing-3: 0.75rem;
+    --spacing-4: 1rem;
+    --spacing-6: 1.5rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.btn-primary {
+  @apply bg-primary text-primary-foreground hover:bg-primary/90
+         active:bg-primary/95 disabled:opacity-50 disabled:cursor-not-allowed
+         px-4 py-2 rounded-[var(--radius-md)] transition-colors;
+}
+
+.btn-secondary {
+  @apply bg-secondary text-secondary-foreground hover:bg-secondary/90
+         active:bg-secondary/95 disabled:opacity-50 disabled:cursor-not-allowed
+         px-4 py-2 rounded-[var(--radius-md)] transition-colors;
+}
+
+.card {
+  @apply bg-card text-card-foreground border border-border
+         rounded-[var(--radius-lg)] shadow-sm hover:shadow-md
+         transition-shadow duration-200;
+}
+
+.input {
+  @apply bg-background border border-input hover:border-primary/50
+         focus:border-primary focus:ring-2 focus:ring-primary/20
+         rounded-[var(--radius-md)] px-3 py-2 transition-all;
+}
