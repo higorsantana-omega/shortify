@@ -8,6 +8,20 @@
       "when": 1747174311681,
       "tag": "0000_smart_barracuda",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1747189526324,
+      "tag": "0001_damp_synch",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1747229730053,
+      "tag": "0002_fresh_bishop",
+      "breakpoints": true
     }
   ]
 }

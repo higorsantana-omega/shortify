@@ -1,0 +1,1 @@
+ALTER TABLE `links` MODIFY COLUMN `id` char(36) NOT NULL;
