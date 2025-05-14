@@ -10,7 +10,7 @@ export class LinksRepository {
   private readonly model = schema.links
 
   constructor(
-    @Inject(env.DATABASE_TAG) private dizzle: MySql2Database<typeof schema>,
+    @Inject(env.DATABASE_TAG) private drizzle: MySql2Database<typeof schema>,
   ) {}
 
   async create(link: Link) {
@@ -25,11 +25,11 @@ export class LinksRepository {
       created_at: link.getCreatedAt(),
       updated_at: link.getUpdatedAt(),
     }
-    await this.dizzle.insert(this.model).values(values)
+    await this.drizzle.insert(this.model).values(values)
   }
 
   async getAll(): Promise<Link[]> {
-    const links = await this.dizzle.select().from(this.model)
+    const links = await this.drizzle.select().from(this.model)
     return links.map(link => Link.createFrom({
       id: link.id,
       key: link.key,
@@ -44,7 +44,7 @@ export class LinksRepository {
   }
 
   async getById(id: string): Promise<Link | null> {
-    const [link] = await this.dizzle
+    const [link] = await this.drizzle
       .select()
       .from(this.model)
       .where(eq(this.model.id, id))
@@ -67,7 +67,7 @@ export class LinksRepository {
   }
 
   async checkDomainAndKeyExists({ domain, key }: { domain: string, key: string }) {
-    const result = await this.dizzle
+    const result = await this.drizzle
       .select({ exists: sql`1` })
       .from(this.model)
       .where(
