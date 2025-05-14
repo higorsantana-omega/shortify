@@ -27,8 +27,11 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "@shortify/drizzle-orm-mysql": "workspace:*",
+    "@shortify/utils": "workspace:*",
+    "@shortify/core": "workspace:*",
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.43.1",
+    "nestjs-zod": "^4.3.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "zod": "^3.24.4"
