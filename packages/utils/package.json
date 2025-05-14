@@ -18,7 +18,11 @@
   "type": "commonjs",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
+  "peerDependencies": {
+    "dayjs": "1.11.11"
+  },
   "dependencies": {
+    "dayjs": "1.11.11",
     "nanoid": "^5.1.5"
   }
 }
