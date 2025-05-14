@@ -1,3 +1,5 @@
+import { DateUtils } from '@shortify/utils'
+
 import { v4 as uuid } from 'uuid'
 
 export interface LinkData {
@@ -43,6 +45,13 @@ export class Link {
     this.expires_at = expires_at
     this.created_at = created_at || new Date()
     this.updated_at = updated_at || new Date()
+  }
+
+  checkIfExpired() {
+    if (!this.getExpiresAt())
+      return false
+
+    return DateUtils.isBeforeNow(this.getExpiresAt() as Date)
   }
 
   getId() {
