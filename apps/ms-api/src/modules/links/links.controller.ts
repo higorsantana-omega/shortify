@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common'
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common'
 import { NewLinkDto } from './dtos/new-link.dto'
 import { LinksService } from './links.service'
 
@@ -18,5 +18,10 @@ export class LinksController {
   @Get()
   getAll() {
     return this.linksService.getAll()
+  }
+
+  @Get(':id')
+  getById(@Param() params: { id: string }) {
+    return this.linksService.getById(params.id)
   }
 }
