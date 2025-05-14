@@ -1,6 +1,4 @@
-import { Plus } from "lucide-react"
-
-import { Button } from "@shortify/ui/components"
+import { LinkButtonCreateLink } from "./link-button-create-link"
 
 export function LinkHeader () {
   return (
@@ -10,12 +8,7 @@ export function LinkHeader () {
       </div>
 
       <div className="flex items-center gap-2">
-        <Button
-          className="bg-primary text-primary-foreground hover:bg-primary/90"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Create link
-        </Button>
+        <LinkButtonCreateLink />
       </div>
     </div>
   )
