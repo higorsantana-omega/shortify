@@ -1,7 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { Link } from '@shortify/core'
-import { buildLink, formatUrlString, getRandomKey, validateUrlFormat } from '@shortify/utils'
+import { buildLink, DateUtils, formatUrlString, getRandomKey, validateUrlFormat } from '@shortify/utils'
+import { env } from 'src/shared/config/env'
 import { LinksRepository } from 'src/shared/module/database/repositories/links.repository'
 import { NewLinkDto } from './dtos/new-link.dto'
 
@@ -24,8 +25,9 @@ export class LinksService {
       key: generatedKey,
       url: formattedUrl,
       shortLink: buildLink({ domain, key: generatedKey }),
-      expired_url: 'http://localhost:3001',
       domain,
+      expired_url: 'http://localhost:3001',
+      expires_at: DateUtils.addMinutesFromNow(env.URL_TIME_EXPIRATION),
     })
 
     await this.linksRepository.create(newLink)
