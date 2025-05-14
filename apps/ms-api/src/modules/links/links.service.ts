@@ -1,0 +1,50 @@
+import { BadRequestException, Injectable } from '@nestjs/common'
+
+import { Link } from '@shortify/core'
+import { buildLink, formatUrlString, getRandomKey, validateUrlFormat } from '@shortify/utils'
+import { LinksRepository } from 'src/shared/module/database/repositories/links.repository'
+import { NewLinkDto } from './dtos/new-link.dto'
+
+@Injectable()
+export class LinksService {
+  constructor(private readonly linksRepository: LinksRepository) {}
+
+  async create(newLinkDto: NewLinkDto): Promise<any> {
+    const { url, key, domain } = newLinkDto
+
+    const formattedUrl = formatUrlString(url)
+
+    const isValidUrl = validateUrlFormat(formattedUrl)
+    if (!isValidUrl)
+      throw new BadRequestException('Invalid url format')
+
+    const generatedKey = await this.getKey({ domain, key })
+
+    const newLink = new Link({
+      key: generatedKey,
+      url: formattedUrl,
+      shortLink: buildLink({ domain, key: generatedKey }),
+      expired_url: 'http://localhost:3001',
+      domain,
+    })
+
+    await this.linksRepository.create(newLink)
+
+    return newLink
+  }
+
+  private async getKey({ domain, key }: { domain: string, key?: string }) {
+    const randomKey = key || getRandomKey()
+
+    const checkKeyExists = await this.linksRepository.checkDomainAndKeyExists({
+      domain,
+      key: randomKey,
+    })
+
+    if (!checkKeyExists) {
+      return randomKey
+    }
+
+    return this.getKey({ domain })
+  }
+}
