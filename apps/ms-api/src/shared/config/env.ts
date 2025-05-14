@@ -8,6 +8,8 @@ const envSchema = z.object({
   DATABASE_NAME: z.string().min(1, 'DATABASE_NAME is required').default('DB_SHORTIFY_DEV'),
 
   APP_PORT: z.number().default(3000),
+
+  URL_TIME_EXPIRATION: z.number().default(15),
 })
 
 const parsedEnv = envSchema.safeParse(process.env)
