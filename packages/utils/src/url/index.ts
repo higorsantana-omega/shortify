@@ -21,6 +21,12 @@ export function isHttpsUrl(url: string): boolean {
   return new URL(url).protocol === 'https:'
 }
 
+export function isHttpUrl(url: string): boolean {
+  if (!validateUrlFormat(url))
+    return false
+  return new URL(url).protocol === 'https:'
+}
+
 export function formatUrlString(str: string, defaultProtocol = 'https'): string {
   if (!str || typeof str !== 'string')
     return ''
@@ -57,8 +63,8 @@ export function buildLink({
   key: string
 }) {
   if (isHttpsUrl(domain)) {
-    return `${domain}/${key}`
+    return `${domain.replace('https:', 'http:')}/${key}`
   }
 
-  return `https://${domain}${`/${key}`}`
+  return `http://${domain}${`/${key}`}`
 }

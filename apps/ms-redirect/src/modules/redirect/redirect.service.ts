@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
+import { env } from 'src/shared/config/env'
 import { LinksRepository } from 'src/shared/module/database/repositories/links.repository'
 
 @Injectable()
@@ -9,7 +10,7 @@ export class RedirectService {
     const link = await this.linksRepository.getByKey(key)
 
     if (!link)
-      throw new NotFoundException('Link not found')
+      return env.NOT_FOUND_PAGE
 
     const isExpired = link.checkIfExpired()
     if (isExpired)

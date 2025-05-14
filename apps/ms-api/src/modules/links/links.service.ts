@@ -27,7 +27,7 @@ export class LinksService {
       url: formattedUrl,
       shortLink: buildLink({ domain, key: generatedKey }),
       domain,
-      expired_url: 'http://localhost:3001',
+      expired_url: 'http://localhost:3006',
       expires_at: DateUtils.addMinutesFromNow(env.URL_TIME_EXPIRATION),
     })
 
