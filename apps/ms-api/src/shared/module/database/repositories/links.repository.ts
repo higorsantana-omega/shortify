@@ -28,8 +28,19 @@ export class LinksRepository {
     await this.dizzle.insert(this.model).values(values)
   }
 
-  async getAll() {
-    return this.dizzle.select().from(this.model)
+  async getAll(): Promise<Link[]> {
+    const links = await this.dizzle.select().from(this.model)
+    return links.map(link => Link.createFrom({
+      id: link.id,
+      key: link.key,
+      domain: link.domain,
+      url: link.url,
+      shortLink: link.shortLink,
+      expired_url: link.expired_url,
+      expires_at: link.expires_at as Date,
+      created_at: link.created_at as Date,
+      updated_at: link.updated_at as Date,
+    }))
   }
 
   async checkDomainAndKeyExists({ domain, key }: { domain: string, key: string }) {
