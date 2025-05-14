@@ -25,6 +25,18 @@ export class DateUtils {
     return targetDate.isBefore(now)
   }
 
+  static secondsUntil(date: DateType): number {
+    const now = dayjs()
+    const targetDate = dayjs(date)
+
+    if (targetDate.isBefore(now)) {
+      return 0
+    }
+
+    const diffInSeconds = targetDate.diff(now, 'second')
+    return diffInSeconds
+  }
+
   static format(date: DateType, format: string = 'DD/MM/YYYY HH:mm:ss'): string {
     return dayjs(date).format(format)
   }
