@@ -4,6 +4,7 @@ import { Link } from '@shortify/core'
 import { buildLink, DateUtils, formatUrlString, getRandomKey, validateUrlFormat } from '@shortify/utils'
 import { env } from 'src/shared/config/env'
 import { LinksRepository } from 'src/shared/module/database/repositories/links.repository'
+import { ListLinkDto } from './dtos/list-link.dto'
 import { NewLinkDto } from './dtos/new-link.dto'
 
 @Injectable()
@@ -33,6 +34,17 @@ export class LinksService {
     await this.linksRepository.create(newLink)
 
     return newLink
+  }
+
+  async getAll(): Promise<ListLinkDto[]> {
+    const links = await this.linksRepository.getAll()
+    return links.map((link) => {
+      const isExpired = link.checkIfExpired()
+      return {
+        ...link.serialize(),
+        expired: isExpired,
+      }
+    })
   }
 
   private async getKey({ domain, key }: { domain: string, key?: string }) {
