@@ -27,6 +27,6 @@ import { LinksRepository } from './repositories/links.repository'
     }),
   ],
   providers: [LinksRepository],
-  exports: [],
+  exports: [LinksRepository],
 })
 export class DatabaseModule {}
