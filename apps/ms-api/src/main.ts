@@ -9,6 +9,10 @@ import { env } from './shared/config/env'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+
+  app.setGlobalPrefix('api')
+  app.enableVersioning()
+
   await app.listen(env.APP_PORT)
 }
 
