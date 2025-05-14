@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common'
 
 import { Link } from '@shortify/core'
 import { buildLink, DateUtils, formatUrlString, getRandomKey, validateUrlFormat } from '@shortify/utils'
@@ -45,6 +45,19 @@ export class LinksService {
         expired: isExpired,
       }
     })
+  }
+
+  async getById(id: string): Promise<ListLinkDto> {
+    const link = await this.linksRepository.getById(id)
+
+    if (!link)
+      throw new NotFoundException('Link not found')
+
+    const isExpired = link.checkIfExpired()
+    return {
+      ...link.serialize(),
+      expired: isExpired,
+    }
   }
 
   private async getKey({ domain, key }: { domain: string, key?: string }) {
