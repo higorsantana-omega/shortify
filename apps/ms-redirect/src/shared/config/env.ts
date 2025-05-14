@@ -9,7 +9,9 @@ const envSchema = z.object({
 
   APP_PORT: z.number().default(3001),
 
-  URL_TIME_EXPIRATION: z.number().default(15),
+  REDIS_HOST: z.string().optional().default('127.0.0.1'),
+  REDIS_PORT: z.coerce.number().optional().default(6379),
+  REDIS_DB: z.coerce.number().optional().default(0),
 })
 
 const parsedEnv = envSchema.safeParse(process.env)
