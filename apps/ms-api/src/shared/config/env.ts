@@ -3,7 +3,7 @@
 import { z } from 'zod'
 
 const envSchema = z.object({
-  DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
+  DATABASE_URL: z.string().min(1, 'DATABASE_URL is required').default('mysql://myuser:mypassword@localhost:3306/DB_SHORTIFY_DEV'),
   DATABASE_TAG: z.string().min(1, 'DATABASE_TAG is required').default('DB_SHORTIFY'),
   DATABASE_NAME: z.string().min(1, 'DATABASE_NAME is required').default('DB_SHORTIFY_DEV'),
 
