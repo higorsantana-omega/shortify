@@ -24,4 +24,9 @@ export class LinksController {
   getById(@Param() params: { id: string }) {
     return this.linksService.getById(params.id)
   }
+
+  @Get('analytics/report')
+  async getAnalyticsReport() {
+    return this.linksService.getAnalyticsReport()
+  }
 }
