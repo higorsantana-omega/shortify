@@ -21,6 +21,7 @@ export class RedirectService {
       ipAddress: options.ipAddress,
       userAgent: options.userAgent,
       referrer: options.referrer,
+      url: link.getUrl(),
     })
 
     return link.getUrl()
