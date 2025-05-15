@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common'
 import { Link } from '@shortify/core'
-import { and, eq, sql } from 'drizzle-orm'
+import { and, desc, eq, sql } from 'drizzle-orm'
 import { MySql2Database } from 'drizzle-orm/mysql2'
 import { env } from 'src/shared/config/env'
 import * as schema from '../drizzle/schema'
@@ -29,7 +29,10 @@ export class LinksRepository {
   }
 
   async getAll(): Promise<Link[]> {
-    const links = await this.drizzle.select().from(this.model)
+    const links = await this.drizzle
+      .select()
+      .from(this.model)
+      .orderBy(desc(this.model.created_at))
     return links.map(link => Link.createFrom({
       id: link.id,
       key: link.key,
