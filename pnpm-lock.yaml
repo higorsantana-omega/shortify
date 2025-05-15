@@ -256,6 +256,9 @@ importers:
       '@shortify/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      autoprefixer:
+        specifier: ^10.4.21
+        version: 10.4.21(postcss@8.5.3)
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
