@@ -6,63 +6,19 @@ import { Badge, Button } from '@shortify/ui/components'
 import { cn } from '@shortify/ui/lib'
 
 import { Clock, Copy, ExternalLinkIcon, Globe2 } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
 
 import { formatTimeAgo } from '../../../../../lib/date-utils'
+import { useLinkCardController } from './useLinkCardController'
 
 export function LinkCard({ link }: { link: LinkData }) {
-  const [copied, setCopied] = useState(false)
-  const [clicks, _] = useState(2)
-  const [timeRemaining, setTimeRemaining] = useState<string>('')
-  const [isLinkExpired, setIsLinkExpired] = useState(link?.expired ?? false)
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text)
-    setCopied(true)
-    toast.success('Copied to clipboard')
-    setTimeout(() => setCopied(false), 2000)
-  }
-
-  const openLink = (url: string) => {
-    window.open(url, '_blank')
-  }
-
-  const handleLinkExpired = useCallback(() => {
-    setIsLinkExpired(true)
-  }, [])
-
-  const calculateTimeLeft = useCallback(() => {
-    if (!link.expires_at) {
-      return ''
-    }
-
-    const now = new Date().getTime()
-    const expirationDate = new Date(link.expires_at).getTime()
-    const timeDifference = expirationDate - now
-
-    if (timeDifference <= 0) {
-      handleLinkExpired()
-      return '0m'
-    }
-
-    const minutesRemaining = Math.floor(timeDifference / 1000 / 60)
-    return `${minutesRemaining}m`
-  }, [link.expires_at, handleLinkExpired])
-
-  const updateTimeRemaining = useCallback(() => {
-    const currentTime = calculateTimeLeft()
-    // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
-    setTimeRemaining(currentTime)
-  }, [calculateTimeLeft])
-
-  useEffect(() => {
-    updateTimeRemaining()
-
-    const timerInterval = setInterval(updateTimeRemaining, 60000)
-
-    return () => clearInterval(timerInterval)
-  }, [updateTimeRemaining])
+  const {
+    clicks,
+    isClipboardCopied,
+    handleCopyToClipboard,
+    handleOpenLink,
+    timeRemaining,
+    isLinkExpired,
+  } = useLinkCardController({ link })
 
   return (
     <div className={cn(
@@ -80,14 +36,14 @@ export function LinkCard({ link }: { link: LinkData }) {
               variant='ghost'
               size='sm'
               className='h-8 px-2 text-foreground font-medium hover:bg-primary/10 hover:text-primary'
-              onClick={() => copyToClipboard(link.shortLink)}
+              onClick={() => handleCopyToClipboard(link.shortLink)}
               disabled={isLinkExpired}
             >
               {link.shortLink}
               <Copy className={
                 cn(
                   'ml-1.5 h-3.5 w-3.5 text-muted-foreground',
-                  copied && 'text-success',
+                  isClipboardCopied && 'text-success',
                 )
               }
               />
@@ -124,7 +80,7 @@ export function LinkCard({ link }: { link: LinkData }) {
             variant='ghost'
             size='icon'
             className='h-6 w-6 hover:bg-primary/10'
-            onClick={() => openLink(link.url)}
+            onClick={() => handleOpenLink(link.url)}
           >
             <ExternalLinkIcon className='h-3.5 w-3.5' />
           </Button>
