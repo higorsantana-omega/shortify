@@ -1,4 +1,5 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post } from '@nestjs/common'
+import { seconds, Throttle } from '@nestjs/throttler'
 import { NewLinkDto } from './dtos/new-link.dto'
 import { LinksService } from './links.service'
 
@@ -11,6 +12,12 @@ export class LinksController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @Throttle({
+    default: {
+      limit: 10,
+      ttl: seconds(60),
+    },
+  })
   me(@Body() link: NewLinkDto) {
     return this.linksService.create(link)
   }
