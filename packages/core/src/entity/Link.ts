@@ -9,6 +9,7 @@ export interface LinkData {
   shortLink: string
   expired_url: string
   domain: string
+  clicks?: number
   expires_at?: Date
   created_at?: Date
   updated_at?: Date
@@ -21,6 +22,7 @@ export class Link {
   private readonly shortLink: string
   private readonly expired_url: string
   private readonly domain: string
+  private readonly clicks?: number
   private readonly expires_at?: Date
   private readonly created_at?: Date
   private readonly updated_at?: Date
@@ -32,6 +34,7 @@ export class Link {
     shortLink,
     expired_url,
     domain,
+    clicks,
     expires_at,
     created_at,
     updated_at,
@@ -42,6 +45,7 @@ export class Link {
     this.shortLink = shortLink
     this.expired_url = expired_url
     this.domain = domain
+    this.clicks = clicks
     this.expires_at = expires_at
     this.created_at = created_at || new Date()
     this.updated_at = updated_at || new Date()
@@ -78,6 +82,10 @@ export class Link {
     return this.domain
   }
 
+  getClicks() {
+    return this.clicks ?? 0
+  }
+
   getExpiresAt() {
     return this.expires_at
   }
@@ -102,6 +110,7 @@ export class Link {
       shortLink: this.shortLink,
       expired_url: this.expired_url,
       domain: this.domain,
+      clicks: this.clicks ?? 0,
       expires_at: this.expires_at,
       created_at: this.created_at,
       updated_at: this.updated_at,
