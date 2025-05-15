@@ -76,4 +76,28 @@ export class LinksRepository {
 
     return linkEntity
   }
+
+  async registerAccess(params: {
+    key: string
+    ipAddress?: string
+    userAgent?: string
+    referrer?: string
+  }): Promise<void> {
+    const { key, ipAddress, userAgent, referrer } = params
+
+    try {
+      await this.drizzle.insert(schema.linkAccessLogs).values({
+        shortlinkKey: key,
+        accessedAt: new Date(),
+        ipAddress,
+        userAgent,
+        referrer,
+      })
+
+      this.logger.log(`Access registered for key: ${key}`)
+    }
+    catch (error) {
+      this.logger.error(`Failed to register access for key: ${key}`, error)
+    }
+  }
 }
