@@ -33,7 +33,9 @@
     "dev": {
       "cache": false,
       "persistent": true
-    }
+    },
+    "test:unit": {},
+    "test:e2e": {}
   },
   "dangerouslyDisablePackageManagerCheck": true
 }

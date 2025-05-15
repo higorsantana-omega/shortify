@@ -6,7 +6,9 @@
     "dev": "turbo run dev",
     "check-types": "turbo run check-types",
     "lint": "turbo run lint",
-    "lint:fix": "turbo run lint:fix"
+    "lint:fix": "turbo run lint:fix",
+    "test:unit": "turbo run test:unit --filter='./apps/ms-api'",
+    "test:e2e": "turbo run test:e2e --filter='./apps/ms-api'"
   },
   "devDependencies": {
     "prettier": "^3.5.3",
