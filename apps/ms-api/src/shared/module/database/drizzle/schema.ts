@@ -15,6 +15,7 @@ export const links = mysqlTable('links', {
 export const linkAccessLogs = mysqlTable('link_access_logs', {
   id: bigint('id', { mode: 'number' }).primaryKey().autoincrement().notNull(),
   shortlinkKey: varchar('shortlink_key', { length: 10 }).notNull(),
+  url: text().notNull(),
   accessedAt: datetime('accessed_at').notNull(),
   ipAddress: varchar('ip_address', { length: 45 }),
   userAgent: text('user_agent'),

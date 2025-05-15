@@ -1,0 +1,1 @@
+ALTER TABLE `link_access_logs` ADD `url` text NOT NULL;
