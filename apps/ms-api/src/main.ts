@@ -13,7 +13,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api')
   app.enableVersioning()
 
-  await app.listen(env.APP_PORT)
+  await app.listen(env.APP_PORT, '0.0.0.0')
 }
 
 void bootstrap()
