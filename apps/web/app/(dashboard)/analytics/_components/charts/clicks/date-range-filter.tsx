@@ -10,6 +10,7 @@ interface DateRangeFilterProps {
 }
 
 export function DateRangeFilter({ onChange }: DateRangeFilterProps) {
+  // eslint-disable-next-line react-hooks-extra/prefer-use-state-lazy-initialization
   const [dateRange, setDateRange] = useState({ from: subDays(new Date(), 7), to: new Date() })
 
   return (

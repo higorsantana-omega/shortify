@@ -11,7 +11,8 @@ export interface AccessedUrlsAnalytics {
 }
 
 export function clicksAnalyticsDataAdapter(report: LinkReport): ClickAnalytics[] {
-  if (!report) return []
+  if (!report)
+    return []
 
   const data: ClickAnalytics[] = report.mostActivePeriod.map((r) => {
     return {
@@ -24,12 +25,13 @@ export function clicksAnalyticsDataAdapter(report: LinkReport): ClickAnalytics[]
 }
 
 export function mostAccessedUrlsAdapter(report: LinkReport): AccessedUrlsAnalytics[] {
-  if (!report) return []
+  if (!report)
+    return []
 
   const data: AccessedUrlsAnalytics[] = report.mostAccessedUrls.map((r) => {
     return {
       clicks: r.count,
-      url: r.url.replace('https://', '').slice(0, 20) + (r.url.length > 20 ? '...' : '')
+      url: r.url.replace('https://', '').slice(0, 20) + (r.url.length > 20 ? '...' : ''),
     }
   })
 

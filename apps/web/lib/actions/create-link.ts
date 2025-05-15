@@ -1,9 +1,9 @@
 'use server'
 
-import { revalidateTag } from 'next/cache'
+import type { ApiResponse, LinkData } from './types'
 
+import { revalidateTag } from 'next/cache'
 import { config } from '../config'
-import { ApiResponse, LinkData } from './types'
 
 export interface CreateLinkParams {
   url: string
@@ -17,7 +17,7 @@ export async function createLink(params: CreateLinkParams): Promise<ApiResponse<
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(params)
+      body: JSON.stringify(params),
     })
 
     const data = await response.json()
@@ -26,7 +26,7 @@ export async function createLink(params: CreateLinkParams): Promise<ApiResponse<
       return {
         success: false,
         message: data.message || 'Error when create link',
-        status: response.status
+        status: response.status,
       }
     }
 
@@ -35,14 +35,15 @@ export async function createLink(params: CreateLinkParams): Promise<ApiResponse<
     return {
       success: true,
       message: 'Link create with success!',
-      data: data as LinkData
+      data: data as LinkData,
     }
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error request:', error)
     return {
       success: false,
       message: 'Server connection error',
-      status: 500
+      status: 500,
     }
   }
 }

@@ -66,7 +66,7 @@ export class LinksService {
   }> {
     const [mostAccessedUrls, mostActivePeriod] = await Promise.all([
       this.linksRepository.getMostAccessedUrlsByDay(),
-      this.linksRepository.getMostActivePeriod()
+      this.linksRepository.getMostActivePeriod(),
     ])
 
     return {

@@ -6,5 +6,5 @@ export interface SidebarItem {
 
 export const sidebarItems: SidebarItem[] = [
   { name: 'Links', icon: 'link', path: '/links' },
-  { name: 'Analytics', icon: 'chart', path: '/analytics' }
+  { name: 'Analytics', icon: 'chart', path: '/analytics' },
 ]

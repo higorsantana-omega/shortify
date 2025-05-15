@@ -1,6 +1,6 @@
-import { useDashboard } from "../../../../_components/dashboard-context/useDashboard"
+import { useDashboard } from '../../../../_components/dashboard-context/useDashboard'
 
-export function AnalyticsSummary () {
+export function AnalyticsSummary() {
   const { filteredClicksAnalyticsData } = useDashboard()
   return (
     <div className='p-4 border-t'>

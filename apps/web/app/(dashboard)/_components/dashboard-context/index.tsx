@@ -1,6 +1,6 @@
-import { createContext, useCallback, useState } from 'react'
-
 import type { AccessedUrlsAnalytics, ClickAnalytics } from '../../analytics/_lib/analytics-data-adapter'
+
+import { createContext, useCallback, useState } from 'react'
 
 export interface AnalyticsFilters {
   dateRange: {
@@ -21,6 +21,7 @@ export interface DashboardContextValue {
   handleAnalyticsDataFilter: (filters: AnalyticsFilters) => void
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const DashboardContext = createContext({} as DashboardContextValue)
 
 export function DashboardProvider({ children }: { children: React.ReactNode }) {
@@ -60,6 +61,7 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
   }, [clicksAnalyticsData])
 
   return (
+    // eslint-disable-next-line react/no-unstable-context-value
     <DashboardContext value={{
       isNewLinkModalOpen,
       toggleOpenNewLinkModal,

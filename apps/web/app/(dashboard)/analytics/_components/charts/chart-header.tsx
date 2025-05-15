@@ -1,6 +1,6 @@
-export function ChartHeader ({
+export function ChartHeader({
   children,
-  title
+  title,
 }: { children?: React.ReactNode, title: string }) {
   return (
     <div className='p-4 border-b'>

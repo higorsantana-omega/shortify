@@ -22,7 +22,7 @@ import { DatabaseModule } from './shared/module/database/database.module'
         },
       ],
       storage: new ThrottlerStorageRedisService(
-        // eslint-disable-next-line ts/no-unsafe-argument
+
         new Redis({
           host: env.REDIS_HOST,
           port: env.REDIS_PORT,

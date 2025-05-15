@@ -95,7 +95,7 @@ export class LinksRepository {
         COUNT(*) AS count
       FROM link_access_logs
       GROUP BY shortlink_key, DATE(accessed_at)
-      ORDER BY accessedDate ASC, count DESC`
+      ORDER BY accessedDate ASC, count DESC`,
     )
 
     return result[0] as any

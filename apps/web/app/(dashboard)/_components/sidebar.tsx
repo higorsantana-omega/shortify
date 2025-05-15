@@ -1,12 +1,12 @@
 'use client'
 
+import { cn } from '@shortify/ui/lib'
 import Link from 'next/link'
+
 import { usePathname } from 'next/navigation'
 
-import { cn } from '@shortify/ui/lib'
-
-import { getIcon } from '../_lib/get-icon'
 import { sidebarItems } from '../_lib/constants'
+import { getIcon } from '../_lib/get-icon'
 
 export function Sidebar() {
   const pathname = usePathname()
@@ -30,7 +30,7 @@ export function Sidebar() {
               className={cn(
                 'flex items-center gap-3 px-2 py-2 text-sm rounded-md transition-colors',
                 'text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100',
-                pathname === item.path && 'bg-neutral-100 text-neutral-900'
+                pathname === item.path && 'bg-neutral-100 text-neutral-900',
               )}
             >
               {getIcon(item.icon)}
