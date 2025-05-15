@@ -8,6 +8,7 @@ import * as schema from '../drizzle/schema'
 @Injectable()
 export class LinksRepository {
   private readonly model = schema.links
+  private readonly linkAccessLogs = schema.linkAccessLogs
 
   constructor(
     @Inject(env.DATABASE_TAG) private drizzle: MySql2Database<typeof schema>,
@@ -30,20 +31,47 @@ export class LinksRepository {
 
   async getAll(): Promise<Link[]> {
     const links = await this.drizzle
-      .select()
+      .select({
+        id: this.model.id,
+        key: this.model.key,
+        domain: this.model.domain,
+        url: this.model.url,
+        shortLink: this.model.shortLink,
+        expired_url: this.model.expired_url,
+        expires_at: this.model.expires_at,
+        created_at: this.model.created_at,
+        updated_at: this.model.updated_at,
+        clicks: sql<number>`COUNT(${this.linkAccessLogs.id})`.as('clicks'),
+      })
       .from(this.model)
+      .leftJoin(this.linkAccessLogs, eq(this.model.key, this.linkAccessLogs.shortlinkKey))
+      .groupBy(
+        this.model.id,
+        this.model.key,
+        this.model.domain,
+        this.model.url,
+        this.model.shortLink,
+        this.model.expired_url,
+        this.model.expires_at,
+        this.model.created_at,
+        this.model.updated_at,
+      )
       .orderBy(desc(this.model.created_at))
-    return links.map(link => Link.createFrom({
-      id: link.id,
-      key: link.key,
-      domain: link.domain,
-      url: link.url,
-      shortLink: link.shortLink,
-      expired_url: link.expired_url,
-      expires_at: link.expires_at as Date,
-      created_at: link.created_at as Date,
-      updated_at: link.updated_at as Date,
-    }))
+
+    return links.map(link =>
+      Link.createFrom({
+        id: link.id,
+        key: link.key,
+        domain: link.domain,
+        url: link.url,
+        shortLink: link.shortLink,
+        expired_url: link.expired_url,
+        expires_at: link.expires_at as Date,
+        created_at: link.created_at as Date,
+        updated_at: link.updated_at as Date,
+        clicks: link.clicks,
+      }),
+    )
   }
 
   async getById(id: string): Promise<Link | null> {
