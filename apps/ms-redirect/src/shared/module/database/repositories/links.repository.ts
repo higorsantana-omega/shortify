@@ -79,15 +79,17 @@ export class LinksRepository {
 
   async registerAccess(params: {
     key: string
+    url: string
     ipAddress?: string
     userAgent?: string
     referrer?: string
   }): Promise<void> {
-    const { key, ipAddress, userAgent, referrer } = params
+    const { key, ipAddress, userAgent, referrer, url } = params
 
     try {
       await this.drizzle.insert(schema.linkAccessLogs).values({
         shortlinkKey: key,
+        url,
         accessedAt: new Date(),
         ipAddress,
         userAgent,
