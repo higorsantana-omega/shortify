@@ -81,20 +81,21 @@ export class LinksRepository {
     return result.length > 0
   }
 
-  async getAccessesPerDayGroupedByKey(): Promise<
-    { shortlinkKey: string, accessedDate: string, count: number }[]
+  async getMostAccessedUrlsByDay(): Promise<
+    { url: string, shortlinkKey: string, accessedDate: string, count: number }[]
   > {
     const result = await this.drizzle.execute(
       `SELECT
         shortlink_key AS shortlinkKey,
+        MIN(url) AS url,
         DATE(accessed_at) AS accessedDate,
         COUNT(*) AS count
-     FROM link_access_logs
-     GROUP BY shortlink_key, DATE(accessed_at)
-     ORDER BY accessedDate ASC, count DESC`,
+      FROM link_access_logs
+      GROUP BY shortlink_key, DATE(accessed_at)
+      ORDER BY accessedDate ASC, count DESC`
     )
 
-    return result as any
+    return result[0] as any
   }
 
   async getMostActivePeriod(): Promise<{ date: string, count: number } | null> {
