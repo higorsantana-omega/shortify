@@ -1,4 +1,5 @@
-import { Controller, Get, Param, Redirect } from '@nestjs/common'
+import { Controller, Get, Param, Redirect, Req } from '@nestjs/common'
+import { Request } from 'express'
 import { RedirectService } from './redirect.service'
 
 @Controller({
@@ -9,8 +10,12 @@ export class RedirectController {
 
   @Get(':key')
   @Redirect()
-  async redirect(@Param() params: { key: string }) {
-    const url = await this.redirectService.getUrlByKey(params.key)
+  async redirect(@Param() params: { key: string }, @Req() req: Request) {
+    const url = await this.redirectService.getUrlByKey(params.key, {
+      ipAddress: req.ip,
+      userAgent: req.headers['user-agent'],
+      referrer: req.headers.referer,
+    })
     return { url }
   }
 }
