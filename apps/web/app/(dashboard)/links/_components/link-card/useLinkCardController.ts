@@ -10,7 +10,6 @@ const SECONDS_PER_MINUTE = 60
 
 export function useLinkCardController({ link }: { link: LinkData }) {
   const [isClipboardCopied, setIsClipboardCopied] = useState(false)
-  const [clicks, _] = useState(0)
   const [timeRemaining, setTimeRemaining] = useState<string>('')
   const [isLinkExpired, setIsLinkExpired] = useState(link?.expired ?? false)
 
@@ -67,7 +66,6 @@ export function useLinkCardController({ link }: { link: LinkData }) {
   }, [updateTimeRemaining])
 
   return {
-    clicks,
     isClipboardCopied,
     handleCopyToClipboard,
     handleOpenLink,

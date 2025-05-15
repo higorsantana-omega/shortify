@@ -12,7 +12,6 @@ import { useLinkCardController } from './useLinkCardController'
 
 export function LinkCard({ link }: { link: LinkData }) {
   const {
-    clicks,
     isClipboardCopied,
     handleCopyToClipboard,
     handleOpenLink,
@@ -92,13 +91,13 @@ export function LinkCard({ link }: { link: LinkData }) {
             className={
               cn(
                 'text-xs text-muted-foreground bg-muted/50',
-                clicks > 0 && 'text-primary bg-primary/10 border-primary/20',
+                (link.clicks ?? 0) > 0 && 'text-primary bg-primary/10 border-primary/20',
               )
             }
           >
-            {clicks}
+            {link.clicks ?? 0}
             {' '}
-            {clicks === 1 ? 'click' : 'clicks'}
+            {(link.clicks ?? 0) === 1 ? 'click' : 'clicks'}
           </Badge>
         </div>
       </div>

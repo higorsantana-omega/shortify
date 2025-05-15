@@ -16,6 +16,7 @@ export interface LinkData {
   created_at: Date
   updated_at: Date
   expired: true
+  clicks?: number
 }
 
 export interface LinkReport {
