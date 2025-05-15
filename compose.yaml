@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: DB_SHORTIFY_DEV
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - default
+
+  redis:
+    container_name: shortify-redis
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - redisdata:/data
+    restart: always
+    networks:
+      - default
+
+  ms-api:
+    build:
+      context: .
+      dockerfile: apps/ms-api/Dockerfile
+    container_name: shortify-api
+    depends_on:
+      - mysql
+      - redis
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: mysql://myuser:mypassword@mysql:3306/DB_SHORTIFY_DEV
+      DATABASE_TAG: DB_SHORTIFY
+      DATABASE_NAME: DB_SHORTIFY_DEV
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: 0
+    networks:
+      - default
+    command: pnpm run dev
+
+  ms-redirect:
+    build:
+      context: .
+      dockerfile: apps/ms-redirect/Dockerfile
+    container_name: shortify-redirect
+    depends_on:
+      - mysql
+      - redis
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: mysql://myuser:mypassword@mysql:3306/DB_SHORTIFY_DEV
+      DATABASE_TAG: DB_SHORTIFY
+      DATABASE_NAME: DB_SHORTIFY_DEV
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_DB: 0
+    networks:
+      - default
+    command: pnpm run dev
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: shortify-web
+    depends_on:
+      - ms-api
+      - ms-redirect
+    ports:
+      - "3006:3006"
+    networks:
+      - default
+    environment:
+      NEXT_PUBLIC_API_URL: http://ms-api:3000/api/v1
+    command: pnpm run dev
+
+
+volumes:
+  mysql_data:
+  redisdata:
