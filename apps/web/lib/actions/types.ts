@@ -1,4 +1,4 @@
-export type ApiResponse<T = any> = {
+export interface ApiResponse<T = any> {
   success: boolean
   message: string
   data?: T
@@ -16,4 +16,9 @@ export interface LinkData {
   created_at: Date
   updated_at: Date
   expired: true
+}
+
+export interface LinkReport {
+  mostAccessedUrls: { shortlinkKey: string, url: string, accessedDate: string, count: number }[]
+  mostActivePeriod: { date: string, count: number }[]
 }
