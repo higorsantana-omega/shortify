@@ -60,6 +60,21 @@ export class LinksService {
     }
   }
 
+  async getAnalyticsReport(): Promise<{
+    mostAccessedUrls: { url: string, shortlinkKey: string, accessedDate: string, count: number }[]
+    mostActivePeriod: { date: string, count: number } | null
+  }> {
+    const [mostAccessedUrls, mostActivePeriod] = await Promise.all([
+      this.linksRepository.getMostAccessedUrlsByDay(),
+      this.linksRepository.getMostActivePeriod()
+    ])
+
+    return {
+      mostAccessedUrls,
+      mostActivePeriod,
+    }
+  }
+
   private async getKey({ domain, key }: { domain: string, key?: string }) {
     const randomKey = key || getRandomKey()
 
