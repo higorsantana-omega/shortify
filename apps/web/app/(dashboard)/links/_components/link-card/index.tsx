@@ -5,8 +5,8 @@ import type { LinkData } from '../../../../../lib/actions/types'
 import { Badge, Button } from '@shortify/ui/components'
 import { cn } from '@shortify/ui/lib'
 
-import { Copy, ExternalLinkIcon, Globe2 } from 'lucide-react'
-import { useState } from 'react'
+import { Clock, Copy, ExternalLinkIcon, Globe2 } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 
 import { formatTimeAgo } from '../../../../../lib/date-utils'
@@ -14,6 +14,8 @@ import { formatTimeAgo } from '../../../../../lib/date-utils'
 export function LinkCard({ link }: { link: LinkData }) {
   const [copied, setCopied] = useState(false)
   const [clicks, _] = useState(2)
+  const [timeRemaining, setTimeRemaining] = useState<string>('')
+  const [isLinkExpired, setIsLinkExpired] = useState(link?.expired ?? false)
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text)
@@ -26,8 +28,48 @@ export function LinkCard({ link }: { link: LinkData }) {
     window.open(url, '_blank')
   }
 
+  const handleLinkExpired = useCallback(() => {
+    setIsLinkExpired(true)
+  }, [])
+
+  const calculateTimeLeft = useCallback(() => {
+    if (!link.expires_at) {
+      return ''
+    }
+
+    const now = new Date().getTime()
+    const expirationDate = new Date(link.expires_at).getTime()
+    const timeDifference = expirationDate - now
+
+    if (timeDifference <= 0) {
+      handleLinkExpired()
+      return '0m'
+    }
+
+    const minutesRemaining = Math.floor(timeDifference / 1000 / 60)
+    return `${minutesRemaining}m`
+  }, [link.expires_at, handleLinkExpired])
+
+  const updateTimeRemaining = useCallback(() => {
+    const currentTime = calculateTimeLeft()
+    // eslint-disable-next-line react-hooks-extra/no-direct-set-state-in-use-effect
+    setTimeRemaining(currentTime)
+  }, [calculateTimeLeft])
+
+  useEffect(() => {
+    updateTimeRemaining()
+
+    const timerInterval = setInterval(updateTimeRemaining, 60000)
+
+    return () => clearInterval(timerInterval)
+  }, [updateTimeRemaining])
+
   return (
-    <div className='card p-4 group hover:border-primary/20'>
+    <div className={cn(
+      'card p-4 group transition-all duration-300 hover:border-primary/20',
+      isLinkExpired && 'opacity-75 hover:opacity-90 border-neutral-200',
+    )}
+    >
       <div className='flex items-start justify-between mb-3'>
         <div className='flex items-center gap-2'>
           <div className='h-6 w-6 flex items-center justify-center bg-primary/10 rounded-full'>
@@ -39,6 +81,7 @@ export function LinkCard({ link }: { link: LinkData }) {
               size='sm'
               className='h-8 px-2 text-foreground font-medium hover:bg-primary/10 hover:text-primary'
               onClick={() => copyToClipboard(link.shortLink)}
+              disabled={isLinkExpired}
             >
               {link.shortLink}
               <Copy className={
@@ -53,6 +96,19 @@ export function LinkCard({ link }: { link: LinkData }) {
         </div>
 
         <div className='flex items-center gap-2'>
+          {link.expires_at && (
+            <Badge
+              variant='outline'
+              className={`flex items-center gap-1 ${
+                isLinkExpired
+                  ? 'text-error bg-error/10 border-error/20'
+                  : 'text-warning bg-warning/10 border-warning/20'
+              }`}
+            >
+              <Clock className='h-3 w-3' />
+              {isLinkExpired ? 'Expired' : timeRemaining}
+            </Badge>
+          )}
           <Badge variant='outline' className='text-muted-foreground bg-muted/50'>
             {formatTimeAgo(link.created_at.toString())}
           </Badge>
