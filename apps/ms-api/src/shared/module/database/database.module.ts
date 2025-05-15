@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common'
 
 import { DrizzleMySqlModule } from '@shortify/drizzle-orm-mysql'
 
-import { env } from 'src/shared/config/env'
+import { env } from '../../config/env'
 
 import * as schema from './drizzle/schema'
 import { LinksRepository } from './repositories/links.repository'

@@ -2,8 +2,8 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 
 import { Link } from '@shortify/core'
 import { buildLink, DateUtils, formatUrlString, getRandomKey, validateUrlFormat } from '@shortify/utils'
-import { env } from 'src/shared/config/env'
-import { LinksRepository } from 'src/shared/module/database/repositories/links.repository'
+import { env } from '../../shared/config/env'
+import { LinksRepository } from '../../shared/module/database/repositories/links.repository'
 import { ListLinkDto } from './dtos/list-link.dto'
 import { NewLinkDto } from './dtos/new-link.dto'
 

@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common'
 import { Link } from '@shortify/core'
 import { and, desc, eq, sql } from 'drizzle-orm'
 import { MySql2Database } from 'drizzle-orm/mysql2'
-import { env } from 'src/shared/config/env'
+import { env } from '../../../config/env'
 import * as schema from '../drizzle/schema'
 
 @Injectable()
