@@ -1,84 +1,90 @@
-# Turborepo starter
+# Shortify
 
-This Turborepo starter is maintained by the Turborepo core team.
 
-## Using this example
+## Table of Contents
 
-Run the following command:
+1. [Getting Started](#getting-started)
+2. [Apps and Packages](#apps-and-packages)
+2. [Tests](#tests)
+3. [ERD](#erd)
 
-```sh
-npx create-turbo@latest
-```
+## Getting Started
 
-## What's inside?
+### Prerequisites
 
-This Turborepo includes the following packages/apps:
+- Node.js (v20 or higher)
+- Docker and Docker Compose
+- pnpm
 
-### Apps and Packages
+### Installation
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@shortify/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@shortify/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
+1. **Clone the repository**:
+   ```bash
+   git clone http
+   cd shortify
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   pnpm i
+   ```
+
+### Running the Application
+
+1. **Start the application and services**:
+   ```bash
+   docker compose up -d
+   ```
+
+The application will now be running at http://localhost:3006
+
+## Apps and Packages
+
+- `web`: a [Next.js](https://nextjs.org/) app
+- `ms-api`: a Nest.js microservice to create links and generate reports
+- `ms-redirect`: a Nest.js microservice to redirect links
+- `@shortify/ui`: a stub React component library shared by `web` application
+- `@shortify/eslint-config`: `eslint` configurations using AntFu
 - `@shortify/typescript-config`: `tsconfig.json`s used throughout the monorepo
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+## Tests
 
-### Utilities
+The test implementation follows best practices including:
+- Clear Arrange/Act/Assert structure
+- Mocking of dependencies
+- Clear test naming and organization
 
-This Turborepo has some additional tools already setup for you:
+You can run the tests using the npm scripts defined in package.json:
+- `pnpm run test:unit` - Run unit tests
+- `npm run test:e2e` - Run end-to-end tests
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+## ERD
 
-### Build
+The following is the Entity-Relationship Diagram (ERD) for the application:
 
-To build all apps and packages, run the following command:
+```mermaid
+erDiagram
+    links {
+        string id PK
+        string key UK
+        text url
+        text shortLink
+        text expired_url
+        string domain
+        datetime expires_at
+        datetime created_at
+        datetime updated_at
+    }
 
+    link_access_logs {
+        int id PK
+        string shortlinkKey FK
+        datetime accessedAt
+        text url
+        string ipAddress
+        text userAgent
+        text referrer
+    }
+
+    links ||--o{ link_access_logs : "has"
 ```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
